@@ -1,10 +1,10 @@
-;тип приложения
+;ГІГЁГЇ ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГї
      format PE console
-;точка входа
+;ГІГ®Г·ГЄГ  ГўГµГ®Г¤Г 
      entry      start
-;подключение макробиблиотек
+;ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГҐ Г¬Г ГЄГ°Г®ГЎГЁГЎГ«ГЁГ®ГІГҐГЄ
      include 'WIN32A.INC'   ;'includes\win32ax.inc'
-;секция данных
+;Г±ГҐГЄГ¶ГЁГї Г¤Г Г­Г­Г»Гµ
      section '.data' data readable writeable
 cMsg1        db      'N = '
 lencMsg1     =$ - cMsg1
@@ -30,15 +30,15 @@ errorIn       dd    ?
 
 
 
-;секция кода
+;Г±ГҐГЄГ¶ГЁГї ГЄГ®Г¤Г 
       section   '.code' code    readable executable
  start:
- ;получеам дескрипторы потков ввода и вывода
+ ;ГЇГ®Г«ГіГ·ГҐГ Г¬ Г¤ГҐГ±ГЄГ°ГЁГЇГІГ®Г°Г» ГЇГ®ГІГЄГ®Гў ГўГўГ®Г¤Г  ГЁ ГўГ»ГўГ®Г¤Г 
        invoke   GetStdHandle,STD_INPUT_HANDLE
        mov      [stdin],eax
        invoke   GetStdHandle,STD_OUTPUT_HANDLE
        mov      [stdout],eax
-;ввод массива
+;ГўГўГ®Г¤ Г¬Г Г±Г±ГЁГўГ 
        invoke     WriteConsole,[stdout],cMsg1,lencMsg1,NULL,NULL
        stdcall    readInt,n,errorIn
        cmp        [errorIn],0
@@ -58,13 +58,13 @@ readAr:
        add        esi,4
        loop       readAr
 
-;сумма четных элементов
+;Г±ГіГ¬Г¬Г  Г·ГҐГІГ­Г»Гµ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
        mov    ecx, [n]
        mov    esi,0;idx
        xor    eax,eax
 
 SummAr:
-       test     dword [Array+4*esi],1;побитовая конъюнкция
+       test     dword [Array+4*esi],1;ГЇГ®ГЎГЁГІГ®ГўГ Гї ГЄГ®Г­ГєГѕГ­ГЄГ¶ГЁГї
        jnz      ends1
        add      eax,[Array+4*esi]
 
@@ -80,27 +80,27 @@ ends1:
 
 wrErr:
        invoke     WriteConsole,[stdout],cMsg4,lencMsg4,NULL,NULL
-;выход с задержкой
+;ГўГ»ГµГ®Г¤ Г± Г§Г Г¤ГҐГ°Г¦ГЄГ®Г©
 exit:
        invoke   ReadConsole,[stdin],buffer,lenbuf,cntread,NULL
        invoke   ExitProcess,0
-;подпрограмма вывода числа, в секции данных испльзуется строка
+;ГЇГ®Г¤ГЇГ°Г®ГЈГ°Г Г¬Г¬Г  ГўГ»ГўГ®Г¤Г  Г·ГЁГ±Г«Г , Гў Г±ГҐГЄГ¶ГЁГЁ Г¤Г Г­Г­Г»Гµ ГЁГ±ГЇГ«ГјГ§ГіГҐГІГ±Гї Г±ГІГ°Г®ГЄГ 
 ;   buffer
 proc    writeInt        number
-;пролог - сохраняем регистры
+;ГЇГ°Г®Г«Г®ГЈ - Г±Г®ГµГ°Г Г­ГїГҐГ¬ Г°ГҐГЈГЁГ±ГІГ°Г»
         push        eax
         push        edx
         push        ebp
         push        ecx
         push        esi
         push        ebx
-;обработка числа
+;Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г·ГЁГ±Г«Г 
         mov     eax,[number]
         mov     esi, buffer
         xor     ebp,ebp
         xor     ecx,ecx
         mov     ebx,10
-;знак
+;Г§Г­Г ГЄ
         cmp     eax,0
         jge     m1
         mov     [esi],byte '-'
@@ -108,15 +108,15 @@ proc    writeInt        number
         inc     ebp
         neg     eax
 m1:
-;получение цифр
+;ГЇГ®Г«ГіГ·ГҐГ­ГЁГҐ Г¶ГЁГґГ°
         cdq
         div     ebx
         push    edx
         inc     ecx
         cmp     eax,0
         jne     m1
-;формирование строки
-        add   ebp,ecx ;длина на вывод
+;ГґГ®Г°Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г±ГІГ°Г®ГЄГЁ
+        add   ebp,ecx ;Г¤Г«ГЁГ­Г  Г­Г  ГўГ»ГўГ®Г¤
 m2:
         pop     edx
         add     dl,'0'
@@ -127,7 +127,7 @@ m2:
         invoke  WriteConsole,[stdout],buffer,ebp,NULL,NULL
 
 
-; эпилог - востанавливаем регистры
+; ГЅГЇГЁГ«Г®ГЈ - ГўГ®Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г°ГҐГЈГЁГ±ГІГ°Г»
          pop        ebx
          pop        esi
          pop        ecx
@@ -136,10 +136,10 @@ m2:
          pop        eax
         ret
         endp
-;подпрограмма ввода цел числа с контролем введенных символов и переполнения
+;ГЇГ®Г¤ГЇГ°Г®ГЈГ°Г Г¬Г¬Г  ГўГўГ®Г¤Г  Г¶ГҐГ« Г·ГЁГ±Г«Г  Г± ГЄГ®Г­ГІГ°Г®Г«ГҐГ¬ ГўГўГҐГ¤ГҐГ­Г­Г»Гµ Г±ГЁГ¬ГўГ®Г«Г®Гў ГЁ ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГї
 proc    readInt number, errorIn
         pusha
-;ввод чилса
+;ГўГўГ®Г¤ Г·ГЁГ«Г±Г 
         invoke ReadConsole,[stdin],buffer,lenbuf,cntread,NULL
         mov    ecx,[cntread]
         sub    ecx,2
@@ -147,12 +147,12 @@ proc    readInt number, errorIn
         xor    ebx,ebx
         xor    esi,esi
         mov    edi,10;[esi] [buffer+esi]
-;анализ знака
+;Г Г­Г Г«ГЁГ§ Г§Г­Г ГЄГ 
         cmp     byte [buffer+esi],'-'
         jne     m3
         inc     esi
         dec     ecx
-;обработка цифр
+;Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г¶ГЁГґГ°
 m3:
         mov     bl,[buffer+esi]
         sub     bl,'0'
@@ -192,7 +192,7 @@ m5:
 
 
 
-;секция импорта
+;Г±ГҐГЄГ¶ГЁГї ГЁГ¬ГЇГ®Г°ГІГ 
         section '.idata' import data readable writeable
         library kernel32,'KERNEL32.DLL'
         import  kernel32,\
